@@ -1,0 +1,30 @@
+- var BEM_PREFIX = ''
+- var BEM_BLOCK_ELEMENT_SEPARATOR = '__'
+- var BEM_CURRENT_BLOCK = null
+if BEM_RENDERING_BLOCK
+	- BEM_CURRENT_BLOCK = BEM_RENDERING_BLOCK
+
+mixin b(tag)
+	previousBlock = BEM_CURRENT_BLOCK
+	blockName = attributes.class.shift()
+	- if (attributes.href) tag = "a"
+	- BEM_CURRENT_BLOCK = blockName
+	classes = []
+	- classes.push(BEM_PREFIX + blockName)
+
+	#{tag || 'div'}(class=classes, attributes): block
+	
+	- BEM_CURRENT_BLOCK = previousBlock
+
+mixin e(tag)
+	elementName = attributes.class.shift()
+	- if (attributes.href) tag = "a"
+	if !BEM_CURRENT_BLOCK
+		- throw new Error("Element " + elementName + " has no parent block")
+	classes = []
+	- classes.push(BEM_PREFIX + BEM_CURRENT_BLOCK + BEM_BLOCK_ELEMENT_SEPARATOR + elementName)
+	
+	#{tag || 'div'}(class=classes, attributes): block
+
+mixin i(data)
+	!= renderBlock(BEM_CURRENT_BLOCK, data)
