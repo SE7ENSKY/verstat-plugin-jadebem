@@ -10,6 +10,7 @@ mixin b(tag)
 	- if (attributes.href) tag = "a"
 	- BEM_CURRENT_BLOCK = blockName
 	classes = []
+	BEM_PREFIX = BEM_PREFIX || ''
 	- classes.push(BEM_PREFIX + blockName)
 
 	#{tag || 'div'}(class=classes, attributes): block
@@ -22,6 +23,7 @@ mixin e(tag)
 	if !BEM_CURRENT_BLOCK
 		- throw new Error("Element " + elementName + " has no parent block")
 	classes = []
+	BEM_PREFIX = BEM_PREFIX || ''
 	- classes.push(BEM_PREFIX + BEM_CURRENT_BLOCK + BEM_BLOCK_ELEMENT_SEPARATOR + elementName)
 	
 	#{tag || 'div'}(class=classes, attributes): block
